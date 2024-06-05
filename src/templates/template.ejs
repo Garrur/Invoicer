@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        header, footer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header img {
+            max-height: 100px;
+        }
+
+        main {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f0f0f0;
+        }
+
+        .total-section {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        footer img {
+            max-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="<%= logo %>" alt="Company Logo">
+        <h1>Invoice</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Seller Details</h2>
+            <p><%= seller.name %></p>
+            <p><%= seller.address %></p>
+            <p>PAN No.: <%= seller.pan %></p>
+            <p>GST No.: <%= seller.gst %></p>
+        </section>
+        <section>
+            <h2>Billing Details</h2>
+            <p><%= billing.name %></p>
+            <p><%= billing.address %></p>
+            <p>State Code: <%= billing.stateCode %></p>
+        </section>
+        <section>
+            <h2>Shipping Details</h2>
+            <p><%= shipping.name %></p>
+            <p><%= shipping.address %></p>
+            <p>State Code: <%= shipping.stateCode %></p>
+        </section>
+        <section>
+            <h2>Order Details</h2>
+            <p>Order No.: <%= order.orderNo %></p>
+            <p>Order Date: <%= order.orderDate %></p>
+        </section>
+        <section>
+            <h2>Invoice Details</h2>
+            <p>Invoice No.: <%= invoice.invoiceNo %></p>
+            <p>Invoice Date: <%= invoice.invoiceDate %></p>
+            <p>Reverse Charge: <%= invoice.reverseCharge %></p>
+        </section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Discount</th>
+                    <th>Net Amount</th>
+                    <th>Tax Rate</th>
+                    <th>Tax Amount</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(item => { %>
+                    <tr>
+                        <td><%= item.description %></td>
+                        <td><%= item.unitPrice %></td>
+                        <td><%= item.quantity %></td>
+                        <td><%= item.discount %></td>
+                        <td><%= item.netAmount %></td>
+                        <td><%= item.taxRate %></td>
+                        <td><%= item.taxAmount %></td>
+                        <td><%= item.totalAmount %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <section class="total-section">
+            <p>Total Amount: <%= totalAmount %></p>
+            <p>Amount in Words: <%= amountInWords %></p>
+        </section>
+    </main>
+    <footer>
+        <p>For <%= seller.name %></p>
+        <img src="<%= signature %>" alt="Signature">
+        <p>Authorized Signatory</p>
+    </footer>
+</body>
+</html>
