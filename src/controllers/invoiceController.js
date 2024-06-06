@@ -24,13 +24,26 @@ const generateInvoice = (req, res) => {
     // Calculate derived fields for items
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
-        console.log(items)
+        console.log(`Processing item ${i}:`, item);
+    
         item.netAmount = calculateNetAmount(item.unitPrice, item.quantity, item.discount);
+        console.log(`Net Amount for item ${i}:`, item.netAmount);
+    
         item.taxType = placeOfSupply === placeOfDelivery ? 'CGST/SGST' : 'IGST';
+        console.log(`Tax Type for item ${i}:`, item.taxType);
+    
         item.taxRate = placeOfSupply === placeOfDelivery ? 9 : 18;
+        console.log(`Tax Rate for item ${i}:`, item.taxRate);
+    
         item.taxAmount = calculateTax(item.netAmount, item.taxRate);
+        console.log(`Tax Amount for item ${i}:`, item.taxAmount);
+    
         item.totalAmount = item.netAmount + item.taxAmount;
+        console.log(`Total Amount for item ${i}:`, item.totalAmount);
+    
+        console.log(`Completed processing item ${i}:`, item);
     }
+    
     
 
     // Calculate total amount and amount in words
