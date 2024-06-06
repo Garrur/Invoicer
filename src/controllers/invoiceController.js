@@ -1,7 +1,10 @@
 const ejs = require('ejs');
 const htmlPdf = require('html-pdf');
+const phantomjs = require('phantomjs-prebuilt');
+const path = require('path');
 const fs = require('fs');
-const { calculateNetAmount, calculateTax, amountToWords } = require('../utilts/calculations');
+const { calculateNetAmount, calculateTax } = require('../utilts/calculations');
+const { amountToWords } = require('../utilts/convertAmountToWords');
 
 const generateInvoice = (req, res) => {
     const {
@@ -31,7 +34,7 @@ const generateInvoice = (req, res) => {
     const totalAmount = items.reduce((acc, item) => acc + item.totalAmount, 0);
     const amountInWords = amountToWords(totalAmount);
 
-    const templatePath = './src/templates/template.ejs';
+    const templatePath = path.join(__dirname, '../templates/template.ejs');
     const templateData = {
         seller,
         placeOfSupply,
@@ -53,7 +56,12 @@ const generateInvoice = (req, res) => {
             return res.status(500).send(err.message);
         }
 
-        htmlPdf.create(html).toBuffer((err, buffer) => {
+        const options = {
+            phantomPath: phantomjs.path,
+            format: 'Letter'
+        };
+
+        htmlPdf.create(html, options).toBuffer((err, buffer) => {
             if (err) {
                 return res.status(500).send(err.message);
             }
