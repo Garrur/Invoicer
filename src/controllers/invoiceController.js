@@ -22,13 +22,15 @@ const generateInvoice = (req, res) => {
     } = req.body;
 
     // Calculate derived fields for items
-    items.forEach(item => {
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
         item.netAmount = calculateNetAmount(item.unitPrice, item.quantity, item.discount);
         item.taxType = placeOfSupply === placeOfDelivery ? 'CGST/SGST' : 'IGST';
         item.taxRate = placeOfSupply === placeOfDelivery ? 9 : 18;
         item.taxAmount = calculateTax(item.netAmount, item.taxRate);
         item.totalAmount = item.netAmount + item.taxAmount;
-    });
+    }
+    
 
     // Calculate total amount and amount in words
     const totalAmount = items.reduce((acc, item) => acc + item.totalAmount, 0);
