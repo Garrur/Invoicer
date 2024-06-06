@@ -24,6 +24,7 @@ const generateInvoice = (req, res) => {
     // Calculate derived fields for items
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
+        console.log(items)
         item.netAmount = calculateNetAmount(item.unitPrice, item.quantity, item.discount);
         item.taxType = placeOfSupply === placeOfDelivery ? 'CGST/SGST' : 'IGST';
         item.taxRate = placeOfSupply === placeOfDelivery ? 9 : 18;
